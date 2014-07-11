@@ -1,0 +1,105 @@
+<?php
+
+function quipustats_schema() {
+  $schema['quipustats'] = array(
+    'description' => t('Stores stats data from quipu phone calls'),
+    'fields' => array(
+      'id' => array(
+        'description' => 'Id of entry',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE),
+      'cid' => array(
+        'description' => 'Call Id in Drupal logs',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0),
+      'call_id' => array(
+        'description' => 'Call Id in Twilio logs',
+        'type' => 'varchar',
+        'length' => 34,
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => ''),
+      'caller_number' => array(
+        'description' => 'number of incoming call',
+        'type' => 'varchar',
+        'length' => 12,
+        'unsigned' => TRUE,
+	'not null' => TRUE,
+        'default' => ''),
+      'start_time' => array(
+        'description' => 'Call start',
+        'type' => 'datetime',
+        'unsigned' => TRUE,
+	'not null' => TRUE,
+        'default' => ''),
+      'record_section' => array(
+        'description' => 'Timestamp the user entered record section',
+        'type' => 'datetime',
+        'unsigned' => TRUE,
+	'not null' => TRUE,
+        'default' => ''),
+      'end_key' => array(
+        'description' => 'Key pressed to end recording',
+        'type' => 'varchar',
+       	'length' => 6,
+        'unsigned' => TRUE,
+	'not null' => TRUE,
+        'default' => ''),
+      're-record' => array(
+        'description' => 'number of times the user has re-recorded',
+        'type' => 'int',
+        'unsigned' => TRUE,
+	'not null' => TRUE,
+        'default' => 0),
+      'recording_url' => array(
+        'description' => 'Local location of file',
+        'type' => 'varchar',
+       	'length' => 109,
+        'unsigned' => TRUE,
+	'not null' => TRUE,
+        'default' => ''),
+      'recording_fid' => array(
+        'description' => 'file id',
+        'type' => 'varchar',
+        'length' => 4,
+	'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => ''),
+      'recording_id' => array(
+        'description' => 'Unique number associated with recording',
+        'type' => 'varchar',
+        'length' => 4,
+	'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => ''),
+      'listening_section' => array(
+        'description' => 'time user entered listen section,
+        'type' => 'datetime',
+	'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => ''),
+      'selected_story' => array(
+        'description' => 'number of stories listened to',
+        'type' => 'int',
+	'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => ''),
+      'stories_listened' => array(
+        'description' => 'number of stories listened',
+        'type' => 'int',
+	'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => ''),
+        ),
+    'primary key' => array('id'),
+  );
+  return $schema;
+};
+
+
+function quipustats_install() {
+  quipustats_schema();
+};

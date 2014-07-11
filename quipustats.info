@@ -1,0 +1,3 @@
+name = Quipu Stats
+description = Contains function to store and analyse call interacitons
+core = 7.x

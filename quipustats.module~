@@ -1,0 +1,54 @@
+<?php
+
+function quipustats_count_listened() {
+  $query = db_query("SELECT id FROM {quipustats} WHERE listen_section != ''");
+  $query->execute();
+  $result = $query->fetchAll();
+  $total =  count($result) + 30;
+  return (string)$total;
+};
+
+function quipustats_create_entry($cid, $call_id, $caller_number) {
+  $id = db_insert('quipustats')
+    ->fields(array('cid', 'call_id', 'caller_number', 'start_time'))
+    ->values(array('cid' => $cid, 'call_id' => $call_id, 'caller_number' => $caller_number, 'start_time' => date('Y-m-d H:i:s')))
+    ->execute();
+};
+
+function quipustats_listening($cid, $type, $data) {
+  if($type=='accessed') {
+    $insert_values = array('listen_section' => date('Y-m-d H:i:s'));
+  }
+  elseif($type=='count') {
+    $insert_values = array('story_count' => $data);
+  }
+  elseif($type=='selected') {
+    $insert_values = array('selected_stories' => (string)$data);
+  };
+
+  $id = db_update('quipustats')
+    ->fields($insert_values)
+    ->condition('cid', $cid, '=')
+    ->execute();
+};
+
+function quipustats_record($cid, $url, $fid, $recording_id, $length, $nid) {
+  $id = db_update('quipustats')
+    ->fields(array('recording_url' => $url, 'recording_fid' => $fid, 'recording_id' => $recording_id, 'length' => $length, 'nid' => $nid))
+    ->condition('cid', $cid, '=')
+    ->execute();
+};
+
+function quipustats_record_accessed($cid) {
+  $id = db_update('quipustats')
+    ->fields(array('record_section' => date('Y-m-d H:i:s')))
+    ->condition('cid', $cid, '=')
+    ->execute();
+};
+
+function quipustats_record_endkey($cid, $endkey) {
+  $id = db_update('quipustats')
+    ->fields(array('end_key' => $endkey))
+    ->condition('cid', $cid, '=')
+    ->execute();
+};
